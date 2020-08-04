@@ -1,17 +1,55 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="container">
+    <div class="row">
+      <Contestant num="1" />
+      <Contestant num="2" />
+    </div>
+    <div class="row">
+      <div class="col m12 s12">
+        <h3>Mascotitas:</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Edad</th>
+              <th>Vacunas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="mascota in mascotas" :key="mascota.id">
+              <td>{{ mascota.nombre }}</td>
+              <td>{{ mascota.edad }}</td>
+              <td><span v-for="(vacuna, i) in mascota.vacunas" :key="i">{{vacuna}} </span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Contestant from './components/Contestant.vue'
+import { db } from '@/firebase'; 
 
 export default {
+
   name: 'App',
   components: {
-    HelloWorld
+    Contestant
+  },
+  data() {
+    return {
+      mascotas: []
+    }
+  },
+  firestore() {
+    return {
+      mascotas: db.collection('mascotas')
+    }
+  },
+  mounted() {
+    console.log(this.mascotas)
   }
 }
 </script>
